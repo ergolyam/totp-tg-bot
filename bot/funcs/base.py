@@ -76,8 +76,9 @@ async def get_code_command(_, message):
     except Exception as e:
         await safe_call(
             message.reply_text,
-            text=f"Code generation error: {e}"
+            text=f"Code generation error."
         )
+        logging.error(f"Code generation error {e}")
 
 
 if __name__ == "__main__":
