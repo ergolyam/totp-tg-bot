@@ -6,6 +6,10 @@ from bot.funcs.base import (
     get_code_command
 )
 
+in_topic = pyrogram.filters.create(
+    lambda _, __, message: getattr(message, "message_thread_id", None) is not None
+)
+
 def init_handlers(app):
     app.add_handler(
         pyrogram.handlers.message_handler.MessageHandler(
@@ -17,14 +21,14 @@ def init_handlers(app):
         pyrogram.handlers.message_handler.MessageHandler(
             add_totp_command,
             pyrogram.filters.command("addtotp") &
-                pyrogram.filters.group
+                (pyrogram.filters.group | in_topic)
         )
     )
     app.add_handler(
         pyrogram.handlers.message_handler.MessageHandler(
             get_code_command,
             pyrogram.filters.command("getcode") &
-                pyrogram.filters.group
+                (pyrogram.filters.group | in_topic)
         )
     )
 

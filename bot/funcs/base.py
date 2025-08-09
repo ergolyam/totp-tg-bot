@@ -24,7 +24,8 @@ async def start_command(_, message):
 
     await safe_call(
         message.reply_text,
-        text=text
+        text=text,
+        quote=True
     )
 
 
@@ -34,25 +35,29 @@ async def add_totp_command(_, message):
     if len(text) <= 1:
         await safe_call(
             message.reply_text,
-            text="Specify the Base32 secret: /addtotp ABCDEF123..."
+            text="Specify the Base32 secret: /addtotp ABCDEF123...",
+            quote=True
         )
         return
     base = text[1]
     if not is_base32(base):
         await safe_call(
             message.reply_text,
-            text="It appears that this is not a Base32 secret. Please check and try again."
+            text="It appears that this is not a Base32 secret. Please check and try again.",
+            quote=True
         )
         return
     if await add_totp(chat_id, base):
         await safe_call(
             message.reply_text,
-            text="The secret is saved for this chat."
+            text="The secret is saved for this chat.",
+            quote=True
         )
     else:
         await safe_call(
             message.reply_text,
-            text="Unable to keep the secret."
+            text="Unable to keep the secret.",
+            quote=True
         )
 
 
@@ -62,7 +67,8 @@ async def get_code_command(_, message):
     if not base:
         await safe_call(
             message.reply_text,
-            text="The secret is not set. Use /addtotp <BASE32>."
+            text="The secret is not set. Use /addtotp <BASE32>.",
+            quote=True
         )
         return
     try:
@@ -76,7 +82,8 @@ async def get_code_command(_, message):
     except Exception as e:
         await safe_call(
             message.reply_text,
-            text=f"Code generation error."
+            text=f"Code generation error.",
+            quote=True
         )
         logging.error(f"Code generation error {e}")
 
